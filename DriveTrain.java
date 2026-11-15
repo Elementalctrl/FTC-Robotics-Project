@@ -47,12 +47,13 @@ public class DriveTrain extends OpMode {
 	/* Declare OpMode members. */
 	private Blinker control_Hub;
 	private Blinker expansion_Hub_4;
-	DcMotor t0;
-	DcMotor t1;
-	DcMotor t2;
-	DcMotor t3;
-	DcMotor e0;
-	Servo s0;
+	DcMotor MtrLFh0;
+	DcMotor MtrRFh1;
+	DcMotor MtrLBh2;
+	DcMotor MtrRBh3;
+	DcMotor e0; //Expantion hub. This can be used for the feeder or launcher
+	DcMotor e1; //Expantion hub. Can be used for the feeder or launcher
+	//Servo s0; Not in use. Can possably be used for shooting the balls
 	float lTr_1;
 	float rTr_1;
 	float y_a1;//The y value of the "a" stick of the first controlle //The forward and back value 
@@ -64,24 +65,25 @@ public class DriveTrain extends OpMode {
 	public void init() {
 		control_Hub = hardwareMap.get(Blinker.class, "Control Hub");
 		expansion_Hub_4 = hardwareMap.get(Blinker.class, "Expansion Hub 4");
-		t0 = hardwareMap.get(DcMotor.class, "t0"); 
-		t1 = hardwareMap.get(DcMotor.class, "t1");
-		t2 = hardwareMap.get(DcMotor.class, "t2");
-		t3 = hardwareMap.get(DcMotor.class, "t3");
+		MtrLFh0 = hardwareMap.get(DcMotor.class, "MtrLVh0"); 
+		MtrRFh1 = hardwareMap.get(DcMotor.class, "MtrRVh1");
+		MtrLBh2 = hardwareMap.get(DcMotor.class, "MtrLBh2");
+		MtrRBh3 = hardwareMap.get(DcMotor.class, "MtrRBh3");
 		e0 = hardwareMap.get(DcMotor.class, "e0");
-		s0 = hardwareMap.get(Servo.class, "s0");
+		e1 = hardwareMap.get(DcMotor.class, "e1");
+		//s0 = hardwareMap.get(Servo.class, "s0");
 		
-		t0.setDirection(DcMotor.Direction.REVERSE);
-		t1.setDirection(DcMotor.Direction.FORWARD);
-		t2.setDirection(DcMotor.Direction.REVERSE);
-		t3.setDirection(DcMotor.Direction.FORWARD);
+		MtrLFh0.setDirection(DcMotor.Direction.REVERSE);
+		MtrRFh1.setDirection(DcMotor.Direction.FORWARD);
+		MtrLBh2.setDirection(DcMotor.Direction.REVERSE);
+		MtrRBh3.setDirection(DcMotor.Direction.FORWARD);
 		
 		e0.setDirection(DcMotor.Direction.FORWARD);
 		
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
 		
-		s0.setPosition(0);
+		//0.setPosition(0);
 	}
 
 	/*
@@ -101,6 +103,7 @@ public class DriveTrain extends OpMode {
 
 	/*
 	 * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+	 * During the game
 	 */
 	@Override
 	public void loop() {
@@ -128,16 +131,16 @@ public class DriveTrain extends OpMode {
 		telemetry.addData("x_a1", x_a1);
 		telemetry.addData("x_b1", x_b1);
 		
-		telemetry.addData("t0", y_a1-x_a1+x_b1);//Forward-Strave+Turn
-		telemetry.addData("t1", y_a1+x_a1-x_b1);//Forward+Strave-Turn
-		telemetry.addData("t2", y_a1+x_a1-x_b1);//Forward+Strave-Turn
-		telemetry.addData("t3", y_a1-x_a1+x_b1);//Forward-Strave+Turn
+		telemetry.addData("MtrLFh0", y_a1-x_a1+x_b1);//Forward-Strave+Turn
+		telemetry.addData("MtrRFh1", y_a1+x_a1-x_b1);//Forward+Strave-Turn
+		telemetry.addData("MtrLBh2", y_a1+x_a1-x_b1);//Forward+Strave-Turn
+		telemetry.addData("MtrRBh3", y_a1-x_a1+x_b1);//Forward-Strave+Turn
 
 		//Set the power of each motor. auto caps at 1 or -1
-		t0.setPower(y_a1-x_a1+x_b1);
-		t1.setPower(y_a1+x_a1-x_b1);
-		t2.setPower(y_a1+x_a1-x_b1);
-		t3.setPower(y_a1-x_a1+x_b1);
+		MtrLFh0.setPower(y_a1-x_a1+x_b1);
+		MtrRFh1.setPower(y_a1+x_a1-x_b1);
+		MtrLBh2.setPower(y_a1+x_a1-x_b1);
+		MtrRBh3.setPower(y_a1-x_a1+x_b1);
 	}
 
 	/*
@@ -145,6 +148,9 @@ public class DriveTrain extends OpMode {
 	 */
 	@Override
 	public void stop() {
-
+	MtrLFh0.setPower(0);
+	MtrRFh1.setPower(0);
+	MtrLBh2.setPower(0);
+	MtrRBh3.setPower(0);
 	}
 }
